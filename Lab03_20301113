@@ -1,0 +1,196 @@
+class Node:
+    def __init__(self, elem, next, prev):
+        self.elem = elem 
+        self.next = next 
+        self.prev = prev 
+        
+class DoublyList:
+    def __init__(self, a):
+        self.head = Node(None, None, None)
+        
+        self.head.next = self.head 
+        self.head.prev = self.head 
+        
+        if len(a) != 0:
+            
+            nod = None 
+            
+            for i in a: 
+                n = Node(i, None, None)
+                if self.head.next == self.head:
+                    n.next = self.head.next 
+                    n.prev = self.head 
+                    self.head.next = n 
+                    n.next.prev = n 
+                    nod = self.head.next
+                else:
+                    n.next = nod.next 
+                    n.prev = nod.prev 
+                    nod.next = n 
+                    n.next.prev = n 
+                    self.head.prev = n 
+                    n.next = self.head
+                    nod = nod.next
+                
+    def showList(self):
+        x = self.head.next 
+        
+        if x is self.head:
+            print("Empty list")
+            
+        self.size = 0   
+        while x != self.head: 
+            self.size += 1
+            x = x.next
+        j = 1
+        
+        y = self.head.next 
+        while j <= self.size:
+            if j == self.size:
+                print(y.elem, end = "\n")
+                
+            else:
+                print(y.elem, end = " <--> ")
+            y = y.next 
+            j += 1
+        
+
+    def insert(self, newElemnet, index = None):
+        node = Node(newElemnet, None, None)
+        temp = self.head.next
+        verify = True 
+        
+        while temp != self.head:
+            if temp.elem == newElemnet:
+                verify = False
+                break
+            temp = temp.next
+            
+        if verify:
+        
+            if index == None:
+                
+                end_node = self.head.prev 
+                node.next = self.head 
+                self.head.prev = node 
+                node.prev = end_node 
+                end_node.next = node 
+    
+                
+            elif index != None:
+                x = self.head.next
+                self.size = 0   
+                while x != self.head: 
+                    self.size += 1
+                    x = x.next
+                    
+                if index < 0 or index > self.size:
+                    raise Exception("Index is not valid")
+                    
+                else:
+                    i = 0 
+                    while i < index:
+                        temp = temp.next 
+                        i += 1 
+                    tem = temp.next 
+                    node.next = temp.next 
+                    node.prev = temp.prev 
+                    temp.next = node 
+                    node.next.prev = node 
+                    node.next = tem 
+                    tem.prev = node 
+        else:
+            print("Value already exist.")
+            
+                
+    
+    def remove(self, index):
+        x = self.head.next
+        self.size = 0   
+        while x != self.head: 
+            self.size += 1
+            x = x.next
+            
+        temp = self.head.next 
+        
+        if temp is None:
+            raise Exception("Empty List")
+            
+        if index < 0 or index > self.size :
+            raise Exception("Invalid Index")
+            
+        if index == 0:
+            temp = self.head.next 
+            self.head.next = temp.next 
+            temp.next.prev = temp.next 
+            temp.prev = self.head
+           
+        
+        i = 1 
+        while i < index:
+            temp = temp.next 
+            i += 1 
+        tem = temp.next.next 
+        temp.next = tem 
+        tem.prev = temp 
+    
+    def removeKey(self, deletekey):
+        temp = self.head.next
+        if temp == None:
+            raise Exception("Empty List")
+            
+        i = 0
+        while temp != self.head:
+            if temp.elem == deletekey:
+                break
+            temp = temp.next
+            i += 1
+        j = 1
+        te = self.head.next 
+        while j < i:
+            te = te.next 
+            j += 1 
+        tem = te.next.next 
+        te.next = tem 
+        tem.prev = te 
+
+        return temp.elem
+
+        
+print("#=========================# 3.2 #==================================#")        
+a = [5, 6, 7, 8, 9]
+x = DoublyList(a)
+x.showList()
+b = []
+xx = DoublyList(b)
+xx.showList()
+
+print("#=========================# 3.3 #==================================#") 
+b = [5, 6, 7, 8, 9]
+y = DoublyList(b)
+y.insert(10)
+y.showList()
+y.insert(6)
+y.showList()
+
+print("#=========================# 3.4 #==================================#") 
+b = [5, 6, 7, 8, 9]
+y = DoublyList(b)
+y.insert(10, 2)
+y.showList()
+y.insert(6, 2)
+y.showList()
+
+
+print("#=========================# 3.5 #==================================#") 
+a = [5, 6, 7, 8, 9]
+x = DoublyList(a)
+x.remove(1)
+x.showList()
+
+
+print("#=========================# 3.6 #==================================#") 
+a = [5, 6, 7, 8, 9]
+x = DoublyList(a)
+x.removeKey(8)
+x.showList()
